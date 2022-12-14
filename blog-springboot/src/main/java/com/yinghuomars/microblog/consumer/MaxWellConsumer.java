@@ -36,6 +36,7 @@ public class MaxWellConsumer {
         // 判断操作类型
         switch (maxwellDataDTO.getType()) {
             case "insert":
+            case "bootstrap-insert":
             case "update":
                 // 更新es文章
                 elasticsearchDao.save(BeanCopyUtils.copyObject(article, ArticleSearchDTO.class));
