@@ -1,8 +1,8 @@
 ## 博客介绍
 
 <center>
-  <a href="https://th.yinghuomars.xyz">
-    <img src="https://oos.yinghuomars.xyz/avatar/adce3fe8eadf84abffed6b1c5fb870b3.png" alt="荧惑Mars" style="border-radius: 50%">
+  <a href="https://www.yinghuomars.xyz" target="_blank">
+    <img src="https://yinghuomars-blog.static.yinghuomars.xyz/config/ab9477101f2e4179c6a540a29d2a1738.jpg" alt="荧惑Mars" style="border-radius: 25%;height: 25%;width: 25%">
   </a>
 </center>
 
@@ -29,7 +29,7 @@
 
 ## 在线地址
 
-**项目链接：** <a href="https://th.yinghuomars.xyz" target="_blank">荧惑Mars</a>
+**项目链接：** <a href="https://www.yinghuomars.xyz" target="_blank">荧惑Mars</a>
 
 **Github地址：** <a href="https://github.com/yinghuomars/mars-microblog" target="_blank">荧惑Mars</a>
 
@@ -100,4 +100,5 @@ SQL文件位于根目录下的blog-mysql8.sql，需要MYSQL8以上版本。
 
 ## 项目部署
 
-**部署文档：** <a href="https://github.com/yinghuomars/mars-microblog/DEPLOY.md" target="_blank">项目部署（docker）</a>
+**部署文档：** <a href="https://github.com/yinghuomars/mars-microblog/blob/master/docs/deploy.md" target="_blank">
+项目部署（docker）</a>
