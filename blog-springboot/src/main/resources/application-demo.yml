@@ -5,17 +5,17 @@ server:
             timeout: 21600
 spring:
     application:
-        name: microblog
+        name: yinghuomars-blog
     servlet:
         multipart:
-            max-file-size: 8MB
-            max-request-size: 40MB
+            max-file-size: ${MULT_MAX_SIZE:5MB}
+            max-request-size: ${MULT_MAX_REQ:20MB}
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://127.0.0.1:3306/microblog?useUnicode=true&characterEncodeing=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&allowPublicKeyRetrieval=true
-        username: root
-        password: blog#123
+        url: jdbc:mysql://${DATABASE_HOST:127.0.0.1}:${DATABASE_PORT:3306}/${DATABASE_DB:microblog}?useUnicode=true&characterEncodeing=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&allowPublicKeyRetrieval=true
+        username: ${DATABASE_USERNAME:root}
+        password: ${DATABASE_PASSWORD:Blog123@mysql}
         hikari:
             minimum-idle: 5
             idle-timeout: 180000
@@ -27,18 +27,18 @@ spring:
             connection-test-query: SELECT 1
     elasticsearch:
         rest:
-            uris: http://127.0.0.1:9200
-            username: elastic
-            password: elastic
-            read-timeout: 10s
-            connection-timeout: 5s
+            uris: ${ES_URI:http://127.0.0.1:9200}
+            username: ${ES_USERNAME:elastic}
+            password: ${ES_PASSWORD:Blog123@elastic}
+            read-timeout: ${ES_READ_TIMEOUT:10s}
+            connection-timeout: ${ES_CONN_TIMEOUT:5s}
     mail:
-        test-connection: true
-        host: 邮箱平台smtp服务器地址
-        port: 587
-        nickname: 发送邮件时的昵称
-        username: 发送邮件的邮箱
-        password: 邮箱平台的授权码
+        test-connection: ${MAIL_TEST:true}
+        host: ${MAIL_HOST:smtp.qq.com}
+        port: ${MAIL_PORT:587}
+        nickname: ${MAIL_NICKNAME:荧惑Mars}
+        username: ${MAIL_USERNAME:admin@qq.com}
+        password: ${MAIL_PASSWORD:''}
         default-encoding: UTF-8
         protocol: smtp
         properties:
@@ -50,35 +50,35 @@ spring:
                     starttls:
                         enable: true
     rabbitmq:
-        host: 127.0.0.1
-        port: 5672
-        username: blog_manager
-        password: blog_manager
+        host: ${RABBITMQ_HOST:127.0.0.1}
+        port: ${RABBITMQ_PORT:5672}
+        username: ${RABBITMQ_USERNAME:admin}
+        password: ${RABBITMQ_PASSWORD:Blog123@rabbitmq}
         listener:
             simple:
                 retry:
                     enabled: true
                     max-attempts: 3 #最大重试次数
-                    initial-interval: 10000 #重试间隔时间（单位毫秒）
+                    initial-interval: 5000 #重试间隔时间（单位毫秒）
     redis:
-        host: 127.0.0.1
-        port: 6379
-        password: blog123
-        database: 2
+        host: ${REDIS_HOST:127.0.0.1}
+        port: ${REDIS_PORT:5672}
+        password: ${REDIS_PWD:admin}
+        database: ${REDIS_DATABASE:Blog123@redis}
 management:
     health:
         elasticsearch:
-            enabled: true
+            enabled: ${MANAGE_HEALTH_ES:true}
         mail:
-            enabled: true
+            enabled: ${MANAGE_HEALTH_MAIL:true}
 logging:
     file:
-        path: ./log/${spring.application.name}/
+        path: /home/log/${spring.application.name}/
     level:
         root: info
         com:
             yinghuomars:
-                microblog: trace
+                microblog: info
 mybatis-plus:
     mapper-locations: classpath:mapper/*.xml
     configuration:
@@ -89,33 +89,26 @@ mybatis-plus:
 yinghuomars:
     # 网站域名（邮件通知用）
     website:
-        url: http://127.0.0.1:8080
+        url: ${WEBSITE_URL:http://localhost}
     upload:
         # 上传策略 可选local或oss
-        mode: local
+        mode: ${UPLOAD_MODE:local}
         local:
-            base-url: http://127.0.0.1:8080:8080/static/
-            base-path: D:/mars-microblog/static/
-    swagger:
-        basic:
-            host: http://127.0.0.1:8080/
-            title: YINGHUOMARS-BLOG
-            description: ${yinghuomars.swagger.basic.title} API DOC
+            base-url: ${UPLOAD_LOCAL_BASEURL:http://127.0.0.1/static/}
+            base-path: ${UPLOAD_LOCAL_BASEPATH:/home/static/}
+        oss:
+            url: ${UPLOAD_OSS_URL:''}
+            access-key-id: ${UPLOAD_OSS_ACCESS_ID:''}
+            access-key-secret: ${UPLOAD_OSS_ACCESS_SECRET:''}
+            endpoint: ${UPLOAD_OSS_ENDPOINT:''}
+            bucket-name: ${UPLOAD_OSS_BUCKET:''}
     search:
         # 搜索模式 可选 elasticsearch或mysql
-        mode: elasticsearch
+        mode: ${SEARCH_MODE:mysql}
     # 第三方配置信息
     platform:
         # qq开放平台
         qq:
-            app-id: QQ APPID
+            app-id: ${PLATFORM_QQ_APPID:''}
             check-token-url: https://graph.qq.com/oauth2.0/me?access_token={access_token}
             user-info-url: https://graph.qq.com/user/get_user_info?openid={openid}&access_token={access_token}&oauth_consumer_key={oauth_consumer_key}
-        # 微博开放平台
-        weibo:
-            app-id: 微博APPID
-            app-secret: 微博APPSECRET
-            grant-type: authorization_code
-            redirect-url: 微博回调地址
-            access-token-url: https://api.weibo.com/oauth2/access_token
-            user-info-url: https://api.weibo.com/2/users/show.json?uid={uid}&access_token={access_token}
